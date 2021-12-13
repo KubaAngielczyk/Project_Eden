@@ -5,9 +5,25 @@ using UnityEngine;
 public class PlayerController: MonoBehaviour
 {
     public CharacterController controller;
-    public float speed = 12f;
-    public float sprintSpeed = 20f;
-   public AudioSource footSteps;
+    public float speed;
+    public float walkSpeed;
+    public float sprintSpeed = 30f;
+    public float run_start;
+    bool isRunning;
+    float stamina = 5, maxStamina = 5;
+    Rect staminaRect;
+    Texture2D staminaTexture;
+    public AudioSource footsteps;
+    bool playAudio;
+    
+    void Start()
+    {
+        staminaRect = new Rect(Screen.width / 10, Screen.height * 9/10, Screen.width / 3, Screen.height / 50);
+        staminaTexture = new Texture2D(1, 1);
+        staminaTexture.SetPixel(0, 0, Color.white);
+        staminaTexture.Apply();
+        
+    }
 
 
     // Update is called once per frame
@@ -17,29 +33,56 @@ public class PlayerController: MonoBehaviour
         float z = Input.GetAxis("Vertical");
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
-        if (Input.GetKey(KeyCode.Space))
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
+            SetRunning(true);
+            footsteps.Play();
 
         }
-        if (Input.GetKey(KeyCode.LeftShift))
-
-        {
-            speed = sprintSpeed;
-
-
-        }
-        else
-
-        {
-            speed = 12f;
-
-            footSteps.Play();
-        }
+            
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            speed = 4f;
+            SetRunning(false);
+            speed = 12f;
+            footsteps.Stop();
         }
+        if (isRunning)
+        {
+            stamina -= Time.deltaTime; 
+            if (stamina < 0)
+            {
+                stamina = 0;
+                SetRunning(false);
+                speed = 12f;
+                footsteps.Stop();
+            }
+        }
+        else if (stamina < maxStamina)
+        {
+            stamina += Time.deltaTime;
+        }
+            
+        
     }
+
+    void SetRunning(bool isRunning)
+    {
+        this.isRunning = isRunning;
+        this.speed = isRunning ? sprintSpeed : walkSpeed;
+    }
+    void OnGUI()
+    {
+        float ratio = stamina / maxStamina;
+        float rectWidth = ratio * Screen.width / 3;
+        staminaRect.width = rectWidth;
+        GUI.DrawTexture(staminaRect, staminaTexture);
+    }
+
+    
+    
+       
+    
 }
 
 

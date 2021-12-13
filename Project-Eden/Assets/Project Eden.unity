@@ -634,8 +634,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1390533269}
   speed: 12
+  walkSpeed: 0
   sprintSpeed: 20
-  footSteps: {fileID: 1390533265}
+  run_start: 0
+  footsteps: {fileID: 1390533265}
 --- !u!82 &1390533265
 AudioSource:
   m_ObjectHideFlags: 0
@@ -647,10 +649,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: caa3bcac435682b438e18ee9550f3a89, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
