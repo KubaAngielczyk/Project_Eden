@@ -15,7 +15,11 @@ public class PlayerController: MonoBehaviour
     Texture2D staminaTexture;
     public AudioSource footsteps;
     bool playAudio;
-    
+    public float jump = 0.01f;
+    private Vector3 velocity;
+    public bool isOnGround = true;
+    private float Gravity = -16f;
+
     void Start()
     {
         staminaRect = new Rect(Screen.width / 10, Screen.height * 9/10, Screen.width / 3, Screen.height / 50);
@@ -62,9 +66,22 @@ public class PlayerController: MonoBehaviour
         {
             stamina += Time.deltaTime;
         }
+        //jumping
+        if (Input.GetButtonDown("Jump") && transform.position.y < 2.55)
+        {
+            velocity.y = jump;
             
-        
+        }
+        else
+        {
+            velocity.y += Gravity * Time.deltaTime;
+        }
+        controller.Move(velocity * Time.deltaTime);
     }
+
+
+
+
 
     void SetRunning(bool isRunning)
     {
@@ -78,11 +95,19 @@ public class PlayerController: MonoBehaviour
         staminaRect.width = rectWidth;
         GUI.DrawTexture(staminaRect, staminaTexture);
     }
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            isOnGround = true;
+        }
+    }
 
-    
-    
-       
-    
+
+
+
+
 }
+
 
 
