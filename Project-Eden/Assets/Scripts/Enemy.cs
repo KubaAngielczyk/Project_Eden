@@ -27,9 +27,6 @@ public class Enemy : MonoBehaviour
             Vector3 newPos = transform.position - dirToPlayer;
             Mob.SetDestination(newPos);
         }
-        if(Player.transform.position == Mob.transform.position)
-        {
-            SceneManager.LoadScene("menu");
-        }
+        
     }
 }
